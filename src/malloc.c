@@ -3,60 +3,47 @@
 #include "malloc.h"
 #include <sys/mman.h>
 
-t_mal	*init(int size, t_mal ptr)
+void	*put_small(size_t size, t_mal *small)
 {
-	int	n;
-	int	m;
-	t_mal *new;
-
-	// new = je sais pas comment alouer sans memoire ahahah
-	new->next = NULL;
-	if (size < n)
-		new->total = n;
-	else if (size < m)
-		new->total = m;
-	else
-		new->total = 0;
-	new->dispo = new->total - size;
-	new->actual = size;
-	// allourer le debut ahahha;
-	return (new);
-}
-
-void	*new_ptr(int size, t_mal *ptr)
-{
-	if (ptr == NULL)
-		;//init struct (size, NULL);
+	while (small->dispo < size && small->next)
+		small = small->next;
+	if (small->dispo > size)
+	{
+		small->dispo -= size;
+		
+	}
 	else
 	{
-		while (ptr->next && ptr->dispo < size)
-			ptr = ptr->next;
-		if (size > ptr->dispo)
-			;//ptr->next = init struc (size, ptr)
-		else
-		{
-			ptr->dispo -= size;
-			ptr->actual += size;
-
-		}
+		small->next = mmap(NULL, (sizeof(t_mal) * SIZE_N), PROT_READ | PROT_WRITE , MAP_PRIVATE, 0, 0);
 	}
-	return ((void *)ptr);
-}
 
+	return (NULL);
+}
 
 void	*malloc(size_t size)
 {
 	static t_mal *small;
 	static t_mal *big;
 	static t_mal *other;
-	int			n;
-	int			m;
 
-	if (size < n)
-		new_ptr(size, small);
-	else if (size < m)
-		new_ptr(size, big);
+	if (small == NULL)
+	{
+		if ((small = mmap(small, (sizeof(t_mal) * SIZE_N), PROT_READ | PROT_WRITE , MAP_PRIVATE, 0, 0)) == NULL)
+			exit(1);
+		else
+			small->dispo = SIZE_N;
+		if ((big = mmap(small, (sizeof(t_mal) * SIZE_M), PROT_READ | PROT_WRITE, MAP_PRIVATE , 0, 0)) == NULL)
+			exit (1);
+		else
+			big->dispo = SIZE_M;
+		if ((other = mmap(small, sizeof(t_mal), PROT_READ | PROT_WRITE, MAP_PRIVATE, 0, 0)) == NULL)
+			exit (1);
+	}
+	if (size < SIZE_N)
+		;
+	else if (size < SIZE_M)
+		;
 	else
-		new_ptr(size, other);
+		;
 	return (NULL);
 }
