@@ -10,57 +10,64 @@ void	*put_in(size_t size, t_mal *cur, size_t len)
 {
 	char	*tmp;
 	size_t	old;
+	t_mal	*prev;
 
-	tmp = (char*)cur;
-	tmp += sizeof(t_mal);
-	while (cur->dispo < size && cur->next)
+	prev = NULL;
+/*	while (cur->dispo < (size + 1 + sizeof(size_t)) && cur->next)
 		cur = cur->next;
-	if (cur->dispo >= size)
+	if (cur->dispo >= (size + 1 + sizeof(size_t)))
 	{
-		cur->dispo -= size;
-		while (*tmp != 'd' && *((size_t*)(tmp + 1)) < size)
-			tmp +=  *((size_t*)(tmp + 1)) + 1;
+		tmp = (char*)cur;
+		tmp += sizeof(t_mal);
+		cur->dispo -= size + sizeof(size_t) + 1;
+		while (tmp < ((char*)cur + len + 1 + sizeof(size_t)) && (*tmp == 'i' || *(size_t*)(tmp + 1) < (size + 1 + sizeof(size_t))))
+			tmp += *(size_t*)(tmp + 1) + 1 + sizeof(size_t);
+		if (tmp >=v ((char*) cur + len + 1 + sizeof(size_t)))
+			i++;
 	}
 	else
+		i = 1;*/
+	while (cur)
 	{
-		if ((cur->next =  mmap(NULL, sizeof(t_mal) + len, PROT_WRITE|PROT_READ, MAP_PRIVATE|MAP_ANONYMOUS, 0, 0)) == NULL)
+		tmp = (char*)cur + sizeof(t_mal);
+		while (tmp < ((char*)cur + len + 1 + sizeof(size_t)) && (*tmp == 'i' || *(size_t*)(tmp + 1) < (size + 1 + sizeof(size_t))))
+			tmp += *(size_t*)(tmp + 1) + 1 + sizeof(size_t);
+		if (tmp >=  ((char*) cur + len + 1 + sizeof(size_t)))
+		{
+			prev = cur;
+			cur = cur->next;
+		}
+		else
+			break ;
+	}
+	if (cur == NULL)
+	{
+		cur = prev;
+		if ((cur->next = mmap(NULL, sizeof(t_mal) + len + 1 + sizeof(size_t), PROT_WRITE|PROT_READ, MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
 			exit (1);
 		tmp = (char*)cur->next + sizeof(t_mal);
+		*tmp = 'd';
+		*(size_t*)(tmp + 1) = len - 1 - sizeof(size_t);
 	}
 	*tmp = 'i';
-	old = *((size_t*)(tmp + 1));
-	*((size_t*)(tmp + 1)) = size;
-	tmp +=  *((size_t*)(tmp + 1)) + 1;
-	*tmp    = 'd';
-	*((size_t*)(tmp + 1)) = old - size - 1 - sizeof(size_t);
+	old = *(size_t*)(tmp + 1);
+	*(size_t*)(tmp + 1) = size;
+	if (((tmp + sizeof(size_t) + 1) + size) < ((char*)cur + sizeof(t_mal) + len + 1))
+	{
+		*(tmp + size + 1 + sizeof(size_t)) = 'd';
+		*((size_t*)(tmp + size + 2 + sizeof(size_t) )) = old - size - 1 - sizeof(size_t);
+	}
 	return (tmp + 1 + sizeof(size_t));
 }
 
 void	*malloc(size_t size)
 {
-	static t_mal *small = NULL;
-	static t_mal *big = NULL;
-	static t_mal *other = NULL;
-
-	if (small == NULL)
-	{
-		if ((small = mmap(NULL, sizeof(t_mal) + SIZE_N, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANONYMOUS, 0, 0)) == NULL)
-			exit(1);
-		else
-			small->dispo = SIZE_N - sizeof(size_t) - 1;
-		if ((big =  mmap(NULL, sizeof(t_mal) + SIZE_M, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANONYMOUS, 0, 0)) == NULL)
-			exit (1);
-		else
-			big->dispo = SIZE_M - sizeof(size_t) - 1;
-		if ((other =  mmap(NULL, sizeof(t_mal) + size ,PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANONYMOUS, 0, 0)) == NULL)
-			exit (1);
-		else
-			other->dispo = 0;
-	}
-	if (size < SIZE_N)
-		return (put_in(size, small, SIZE_N));
-	else if (size < SIZE_M)
-		return (put_in(size, big, SIZE_M));
+	if (size < (SIZE_N / 100))
+		return (put_in(size, struct_singleton()->small, SIZE_N));
+	else if (size < (SIZE_M / 100))
+		return (put_in(size, struct_singleton()->big, SIZE_M));
 	else
-		return (put_in(size, other, size));
+		return (put_in(size, struct_singleton()->other, size));
 }
+
+

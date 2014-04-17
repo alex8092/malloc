@@ -10,9 +10,18 @@ typedef	struct s_mal t_mal;
 struct		s_mal
 {
 	t_mal		*next;
-	size_t		dispo;
 };
 
-void	*malloc(size_t size);
+typedef struct s_struct t_struct;
+struct			s_struct
+{
+	t_mal		*small;
+	t_mal		*big;
+	t_mal		*other;
+};
+
+void		show_alloc_mem(void);
+void		*malloc(size_t size);
+t_struct	*struct_singleton(void);
 
 #endif

@@ -6,7 +6,9 @@ LDFLAGS = -lft_malloc -L.
 
 NAME = libft_malloc.a
 
-SRCS = malloc.c
+SRCS = 	malloc.c \
+		struc.c \
+		show.c
 
 SRCS_TEST = main.c
 
