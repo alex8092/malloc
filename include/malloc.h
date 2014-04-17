@@ -3,7 +3,7 @@
 
 # include <unistd.h>
 
-# define SIZE_N 409600
+# define SIZE_N 40600
 # define SIZE_M 40960000
 
 typedef	struct s_mal t_mal;
