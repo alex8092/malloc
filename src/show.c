@@ -7,16 +7,14 @@
 #include <fcntl.h>
 
 
-void	show_alloc_mem(void)
+void	print(t_mal *small, char *type)
 {
-	t_mal	*small;
 	char	*tmp;
 
-	small = struct_singleton()->small;
 	while (small)
 	{
 		tmp = (char *)small + sizeof(t_mal);
-		printf("TINY : %p\n", small);
+		printf("%s : %p\n", type, small);
 		while (tmp < ((char*)small + sizeof(t_mal) + SIZE_N))
 		{
 			if (*tmp == 'i')
@@ -26,4 +24,12 @@ void	show_alloc_mem(void)
 		small = small->next;
 		printf("---\n\n\n\n\n");
 	}
+
+}
+
+void	show_alloc_mem(void)
+{
+	print(struct_singleton()->small, "TINY");
+	print(struct_singleton()->big, "BIG");
+	print(struct_singleton()->other, "OTHER");
 }

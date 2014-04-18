@@ -13,17 +13,24 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 	t_mal	*prev;
 	t_mal	*cur;
 
+	printf("### enter ###\n");
 	cur = *begin;
+	prev = NULL;
 	while (cur)
 	{
-		if (ptr > (void*)cur && ptr < (void*)((char*)cur + len + 1 + sizeof(size_t)))
+		if ((char*)ptr > (char*)cur && (char*)ptr < (char*)cur + len + 1 + sizeof(size_t))
 			break ;
 		prev = cur;
 		cur = cur->next;
 	}
-  	tmp = (char*)cur + sizeof(t_mal);
-	while ((tmp + 1 + sizeof(size_t) + *(size_t*)(tmp + 1)) != (char*)ptr)
-		tmp += 1 +  sizeof(size_t) + *(size_t*)(tmp + 1);
+//	printf("cur = %p\n", cur);
+  //	sleep(1);
+	tmp = (char*)cur + sizeof(t_mal);
+	if (tmp + 1 + sizeof(size_t) != (char*)ptr)
+	{
+		while ((tmp + 2 + 2 * sizeof(size_t) + *(size_t*)(tmp + 1)) != (char*)ptr)
+			tmp += 1 +  sizeof(size_t) + *(size_t*)(tmp + 1);
+	}
 	cur->dispo += size + 1 + sizeof(size_t);
 	if (cur->dispo == len + 1 + sizeof(size_t))
 	{
@@ -45,11 +52,13 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 	}
 }
 
-void	free(void *ptr)
+void	ft_free(void *ptr)
 {
 	char	*tmp;
 	size_t	len;
 
+//	printf("%p\n", ptr);
+//	printf("####    FREEE      ###\n");
 	tmp = (char*)ptr;
 	len = *(size_t*)(tmp - sizeof(size_t));
 	if (len < SIZE_N)

@@ -3,8 +3,8 @@
 
 # include <unistd.h>
 
-# define SIZE_N 40600
-# define SIZE_M 40960000
+# define SIZE_N 4060
+# define SIZE_M 409600
 
 typedef	struct s_mal t_mal;
 struct		s_mal
@@ -22,7 +22,7 @@ struct			s_struct
 };
 
 void		show_alloc_mem(void);
-void		free(void *ptr);
+void		ft_free(void *ptr);
 void		*malloc(size_t size);
 t_struct	*struct_singleton(void);
 
