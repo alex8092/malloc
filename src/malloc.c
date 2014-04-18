@@ -8,57 +8,61 @@
 
 void	*put_in(size_t size, t_mal *cur, size_t len)
 {
-	char	*tmp;
+	char *tmp;
+	t_mal *prev;
 	size_t	old;
-	t_mal	*prev;
 
 	prev = NULL;
-/*	while (cur->dispo < (size + 1 + sizeof(size_t)) && cur->next)
-		cur = cur->next;
-	if (cur->dispo >= (size + 1 + sizeof(size_t)))
-	{
-		tmp = (char*)cur;
-		tmp += sizeof(t_mal);
-		cur->dispo -= size + sizeof(size_t) + 1;
-		while (tmp < ((char*)cur + len + 1 + sizeof(size_t)) && (*tmp == 'i' || *(size_t*)(tmp + 1) < (size + 1 + sizeof(size_t))))
-			tmp += *(size_t*)(tmp + 1) + 1 + sizeof(size_t);
-		if (tmp >=v ((char*) cur + len + 1 + sizeof(size_t)))
-			i++;
-	}
-	else
-		i = 1;*/
 	while (cur)
 	{
-		tmp = (char*)cur + sizeof(t_mal);
-		while (tmp < ((char*)cur + len + 1 + sizeof(size_t)) && (*tmp == 'i' || *(size_t*)(tmp + 1) < (size + 1 + sizeof(size_t))))
-			tmp += *(size_t*)(tmp + 1) + 1 + sizeof(size_t);
-		if (tmp >=  ((char*) cur + len + 1 + sizeof(size_t)))
+		if (cur->dispo < (size + 1 + sizeof(size_t)))
 		{
 			prev = cur;
 			cur = cur->next;
 		}
 		else
-			break ;
+		{
+			tmp = (char*)cur + sizeof(t_mal);
+			while ((tmp + 1 + sizeof(size_t) + size < (char*)cur + sizeof(t_mal) + 1 +  sizeof(size_t) + len) && ((*tmp == 'i') || (*(size_t*)(tmp + 1) <= (1 + sizeof(size_t) + size))))
+				tmp += 1 + sizeof(size_t) + *(size_t*)(tmp + 1);
+			if (tmp + 1 + sizeof(size_t) + size >= (char*)cur + sizeof(t_mal) + 1 +  sizeof(size) + len) 
+			{
+				prev = cur;
+				cur = cur->next;
+			}
+			else
+				break;
+		}
 	}
-	if (cur == NULL)
+	if (!cur)
 	{
 		cur = prev;
-		if ((cur->next = mmap(NULL, sizeof(t_mal) + len + 1 + sizeof(size_t), PROT_WRITE|PROT_READ, MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
+		if ((prev = mmap(NULL, sizeof(t_mal) + len + 1 + sizeof(size_t), PROT_WRITE|PROT_READ, MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
 			exit (1);
-		tmp = (char*)cur->next + sizeof(t_mal);
+		if (!cur)
+			cur = prev;
+		else
+			cur->next = prev;
+		tmp = (char*)prev + sizeof(t_mal);
 		*tmp = 'd';
 		*(size_t*)(tmp + 1) = len - 1 - sizeof(size_t);
+		cur = prev;
+		cur->dispo = len - 1 - sizeof(size_t);
 	}
 	*tmp = 'i';
+	cur->dispo -= size - 1 - sizeof(size_t);
 	old = *(size_t*)(tmp + 1);
 	*(size_t*)(tmp + 1) = size;
-	if (((tmp + sizeof(size_t) + 1) + size) < ((char*)cur + sizeof(t_mal) + len + 1))
+	if (old - size - 2 * (1 +  sizeof(size_t))  > 0)
 	{
-		*(tmp + size + 1 + sizeof(size_t)) = 'd';
-		*((size_t*)(tmp + size + 2 + sizeof(size_t) )) = old - size - 1 - sizeof(size_t);
+		*(tmp + 1 + sizeof(size_t) + size) = 'd';
+		*(size_t*)(tmp + 2 + sizeof(size_t) + size) = old - size - 1 - sizeof(size_t);
+//		printf("total dispo = [%ld]\n", cur->dispo);
+//		printf("old[%ld] - size[%ld] = %ld\n\n", old, size, *(size_t*)(tmp + 2 + sizeof(size_t) + size));
 	}
 	return (tmp + 1 + sizeof(size_t));
 }
+
 
 void	*malloc(size_t size)
 {

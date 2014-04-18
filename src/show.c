@@ -20,9 +20,7 @@ void	show_alloc_mem(void)
 		while (tmp < ((char*)small + sizeof(t_mal) + SIZE_N))
 		{
 			if (*tmp == 'i')
-			{
 				printf("%p - %p : %ld octets\n", (tmp + 1 + sizeof(size_t)), (tmp + 1 + *(size_t*)(tmp + 1) + sizeof(size_t)), *(size_t*)(tmp + 1));
-			}
 			tmp += 1 + *(size_t*)(tmp + 1) + sizeof(size_t);
 		}
 		small = small->next;
