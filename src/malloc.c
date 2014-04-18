@@ -50,7 +50,7 @@ void	*put_in(size_t size, t_mal *cur, size_t len)
 		cur->dispo = len - 1 - sizeof(size_t);
 	}
 	*tmp = 'i';
-	cur->dispo -= size - 1 - sizeof(size_t);
+	cur->dispo -= size + 1 + sizeof(size_t);
 	old = *(size_t*)(tmp + 1);
 	*(size_t*)(tmp + 1) = size;
 	if (old - size - 2 * (1 +  sizeof(size_t))  > 0)
