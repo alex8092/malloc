@@ -71,7 +71,15 @@ void	*malloc(size_t size)
 	else if (size < (SIZE_M / 100))
 		return (put_in(size, struct_singleton()->big, SIZE_M));
 	else
+	{
+		if (struct_singleton()->other == NULL)
+		{
+	if ((struct_singleton()->other =  mmap(NULL, sizeof(t_mal) + 1 + sizeof(size_t) + size, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
+				exit (1);
+			struct_singleton()->other->dispo = size;
+		}
 		return (put_in(size, struct_singleton()->other, size));
+	}
 }
 
 

@@ -17,7 +17,7 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 	prev = NULL;
 	while (cur)
 	{
-		if ((char*)ptr > (char*)cur && (char*)ptr < (char*)cur + len + 1 + sizeof(size_t) + sizeof(t_mal))
+		if ((char*)ptr >= (char*)cur && (char*)ptr <= (char*)cur + len + 1 + sizeof(size_t) + sizeof(t_mal))
 			break ;
 		prev = cur;
 		cur = cur->next;
@@ -45,8 +45,8 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 		*((char*)ptr - sizeof(size_t) - 1) = 'd';
 		if (*((char*)ptr + size) == 'd')
 			*(size_t*)((char*)ptr - sizeof(size_t)) += *(size_t*)((char*)ptr + size + 1) + 1 + sizeof(size_t);
-		if (*(char*)(ptr - 2 * (sizeof(size_t) - 1) - prev_size) == 'd')
-			*(size_t*)((char*)ptr - 2 * sizeof(size_t) - 1 - prev_size) += *(size_t*)((char*)ptr  - sizeof(size_t)) + sizeof(size_t) + 1;
+			if ((char*)cur + sizeof(t_mal)  != (char*)ptr - 1 - sizeof(size_t) && *(char*)(ptr - 2 * (sizeof(size_t) - 1) - prev_size) == 'd')
+				*(size_t*)((char*)ptr - 2 * sizeof(size_t) - 1 - prev_size) += *(size_t*)((char*)ptr  - sizeof(size_t)) + sizeof(size_t) + 1;
 	}
 }
 
@@ -55,8 +55,6 @@ void	ft_free(void *ptr)
 	char	*tmp;
 	size_t	len;
 
-//	printf("%p\n", ptr);
-//	printf("####    FREEE      ###\n");
 	tmp = (char*)ptr;
 	len = *(size_t*)(tmp - sizeof(size_t));
 	if (len < (SIZE_N / 100))

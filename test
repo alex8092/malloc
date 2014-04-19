@@ -1,0 +1,2 @@
+mkdir -p obj
+cc -o obj/main.o -c tests/main.c -Wall -Wextra -Werror -Iinclude -g3

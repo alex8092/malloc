@@ -9,7 +9,8 @@ NAME = libft_malloc.a
 SRCS = 	malloc.c \
 		struc.c \
 		show.c \
-		free.c
+		free.c \
+		realloc.c \
 
 SRCS_TEST = main.c
 

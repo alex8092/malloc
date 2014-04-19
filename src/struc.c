@@ -24,9 +24,6 @@ t_struct	*struct_singleton(void)
 			*(size_t*)(tmp + 1) = SIZE_N - 1 - sizeof(size_t);
 			singleton->small->dispo = SIZE_N - 1 - sizeof(size_t);
 		}
-
-
-
 		if ((singleton->big =  mmap(NULL, sizeof(t_mal) + SIZE_M + 1 + sizeof(size_t), PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
 			exit (1);
 		else
@@ -35,15 +32,7 @@ t_struct	*struct_singleton(void)
 			*(tmp + sizeof(t_mal)) = 'd';
 			*(size_t*)(tmp + sizeof(t_mal) + 1) = SIZE_M - 1 - sizeof(size_t);
 			singleton->big->dispo = SIZE_M - 1 - sizeof(size_t);
-
 		}
-
-
-
-		if ((singleton->other =  mmap(NULL, sizeof(t_mal) + 1 + sizeof(size_t), PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
-			exit (1);
-		singleton->other->dispo = 0;
 	}
-
 	return (singleton);
 }

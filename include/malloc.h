@@ -23,6 +23,7 @@ struct			s_struct
 
 void		show_alloc_mem(void);
 void		ft_free(void *ptr);
+void	*ft_realloc(void *ptr, size_t size);
 void		*malloc(size_t size);
 t_struct	*struct_singleton(void);
 
