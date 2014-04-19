@@ -47,7 +47,7 @@ void	*put_in(size_t size, t_mal *cur, size_t len)
 		*tmp = 'd';
 		*(size_t*)(tmp + 1) = len - 1 - sizeof(size_t);
 		cur = prev;
-		cur->dispo = len - 1 - sizeof(size_t);
+		cur->dispo = len + 1 + sizeof(size_t);
 	}
 	*tmp = 'i';
 	cur->dispo -= size + 1 + sizeof(size_t);

@@ -13,12 +13,11 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 	t_mal	*cur;
 	size_t	prev_size;
 
-	printf("### enter ###\n");
 	cur = *begin;
 	prev = NULL;
 	while (cur)
 	{
-		if ((char*)ptr > (char*)cur && (char*)ptr < (char*)cur + len + 1 + sizeof(size_t))
+		if ((char*)ptr > (char*)cur && (char*)ptr < (char*)cur + len + 1 + sizeof(size_t) + sizeof(t_mal))
 			break ;
 		prev = cur;
 		cur = cur->next;
@@ -45,9 +44,9 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 	{
 		*((char*)ptr - sizeof(size_t) - 1) = 'd';
 		if (*((char*)ptr + size) == 'd')
-			*(size_t*)((char*)ptr - sizeof(size_t)) += *(size_t*)((char*)ptr + size) + 1;
+			*(size_t*)((char*)ptr - sizeof(size_t)) += *(size_t*)((char*)ptr + size + 1) + 1 + sizeof(size_t);
 		if (*(char*)(ptr - 2 * (sizeof(size_t) - 1) - prev_size) == 'd')
-			*(size_t*)((char*)ptr - 2 * sizeof(size_t) - 1 - prev_size) += size;
+			*(size_t*)((char*)ptr - 2 * sizeof(size_t) - 1 - prev_size) += *(size_t*)((char*)ptr  - sizeof(size_t)) + sizeof(size_t) + 1;
 	}
 }
 
