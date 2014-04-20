@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 07:57:14 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 11:59:06 by amerle           ###   ########.fr       */
+/*   Updated: 2014/04/20 16:14:20 by thrivier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ int						ft_strlen(char *str);
 void					ft_putstr(char *str);
 void					ft_putnbr(size_t n);
 t_struct				*struct_singleton(void);
+int						is_mine(void *ptr);
+
 
 #endif

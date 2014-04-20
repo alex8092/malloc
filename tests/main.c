@@ -1,7 +1,6 @@
 #include "malloc.h"
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 int	main(void)
 {
@@ -9,20 +8,8 @@ int	main(void)
 	long int	i;
 //	long int	y;
 
-	for (i = 0; i < 20000; ++i)
-	{
-
-		str = malloc(5000000000);
-//		ft_realloc(str, 5);
-		realloc(str, 500000);
-//		str = malloc(2000);
-//		str = malloc(50000);
-//		for (y = 0; y < 200; y++)
-//			str[y] = 'a';
-//		str[y] = 0;
-//		ft_free(str);
-		free(str);
-	}
+	for (i = 0; i < 2000; ++i)
+		str = malloc(50);
 	show_alloc_mem();
 	return (0);
 }

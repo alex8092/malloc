@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: thrivier <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2014/04/20 13:43:59 by thrivier          #+#    #+#              #
+#    Updated: 2014/04/20 18:25:45 by thrivier         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -g3
@@ -30,12 +42,16 @@ OBJS_TEST = $(addprefix obj/,$(SRCS_TEST:.c=.o))
 
 all: $(NAME)
 
+ft_test: $(NAME) $(OBJS_TEST)
+	$(CC) -o tests/test.bin $(OBJS_TEST) $(LDFLAGS)
+	./tests/test.bin
+
 test: $(NAME) $(OBJS_TEST)
 	$(CC) -o tests/test.bin $(OBJS_TEST) $(LDFLAGS)
-	(export DYLD_LIBRARY_PATH=. ; \
-	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT) ; \
-	export DYLD_FORCE_FLAT_NAMESPACE=1 ; \
-	ls -lRa .)
+	(export DYLD_LIBRARY_PATH=.  \
+	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT)  \
+	export DYLD_FORCE_FLAT_NAMESPACE=1  \
+	 )
 
 $(NAME): $(OBJS)
 	$(CC) -shared -o $@ $^
