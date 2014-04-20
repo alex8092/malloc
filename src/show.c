@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 05:13:49 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 06:22:34 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 09:00:39 by thrivier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,4 @@ void		show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(ret);
 	ft_putstr(" octets\n");
-
 }

@@ -6,10 +6,9 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 05:13:53 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 05:53:48 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 09:01:25 by thrivier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,33 +18,37 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-t_struct	*struct_singleton(void)
+static void		ft_init_params(t_struct *singleton, size_t size)
 {
-	static t_struct *singleton;
 	char	*tmp;
+
+	tmp = (char*)singleton->small + sizeof(t_mal);
+	*tmp = 'd';
+	*(size_t*)(tmp + 1) = size - 1 - sizeof(size_t);
+	singleton->small->dispo = size - 1 - sizeof(size_t);
+}
+
+t_struct		*struct_singleton(void)
+{
+	static t_struct		*singleton;
+	size_t				size;
 
 	if (singleton == NULL)
 	{
-		singleton = mmap(NULL, sizeof(t_struct), PROT_WRITE|PROT_READ, MAP_PRIVATE|MAP_ANON, -1, 0);
-		
-		if ((singleton->small = mmap(NULL, sizeof(t_mal) + SIZE_N + sizeof(size_t) + 1, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
+		singleton = mmap(NULL, sizeof(t_struct), AG, -1, 0);
+		if ((singleton->small = NEW(SIZE_N)) == NULL)
 			exit(1);
 		else
 		{
-			tmp = (char*)singleton->small + sizeof(t_mal);
-			*tmp = 'd';
-			*(size_t*)(tmp + 1) = SIZE_N - 1 - sizeof(size_t);
-			singleton->small->dispo = SIZE_N - 1 - sizeof(size_t);
+			size = SIZE_N;
+			ft_init_params(singleton, size);
 		}
-	
-		if ((singleton->big =  mmap(NULL, sizeof(t_mal) + SIZE_M + 1 + sizeof(size_t), PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
+		if ((singleton->big = NEW(SIZE_M)) == NULL)
 			exit (1);
 		else
 		{
-			tmp = (char*)singleton->big + sizeof(t_mal);
-			*tmp  = 'd';
-			*(size_t*)(tmp + 1) = SIZE_M - 1 - sizeof(size_t);
-			singleton->big->dispo = SIZE_M - 1 - sizeof(size_t);
+			size = SIZE_M;
+			ft_init_params(singleton, size);
 		}
 	}
 	return (singleton);
