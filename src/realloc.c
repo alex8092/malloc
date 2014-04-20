@@ -15,7 +15,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	printf("test\n");
 	tmp = (char*)ptr;
 	old_size = (size_t*)(tmp - sizeof(size_t));
-	next =  (size_t*)(tmp + sizeof(size_t) + 1 + *(size_t*)(tmp - sizeof(size_t)));
+	next =  (size_t*)(tmp + 1 + *(size_t*)(tmp - sizeof(size_t)));
 	if (size >= *(size_t*)(tmp - sizeof(size_t)))
 		return (ptr);
 	printf("test2\n");

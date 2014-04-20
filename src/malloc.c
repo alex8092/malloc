@@ -57,8 +57,6 @@ void	*put_in(size_t size, t_mal *cur, size_t len)
 	{
 		*(tmp + 1 + sizeof(size_t) + size) = 'd';
 		*(size_t*)(tmp + 2 + sizeof(size_t) + size) = old - size - 1 - sizeof(size_t);
-//		printf("total dispo = [%ld]\n", cur->dispo);
-//		printf("old[%ld] - size[%ld] = %ld\n\n", old, size, *(size_t*)(tmp + 2 + sizeof(size_t) + size));
 	}
 	return (tmp + 1 + sizeof(size_t));
 }
@@ -66,15 +64,15 @@ void	*put_in(size_t size, t_mal *cur, size_t len)
 
 void	*malloc(size_t size)
 {
-	if (size < (SIZE_N / 100))
+	if (size < (SIZE_N / (100 - 1 - sizeof(size_t))))
 		return (put_in(size, struct_singleton()->small, SIZE_N));
-	else if (size < (SIZE_M / 100))
+	else if (size < (SIZE_M / (100 - 1 - sizeof(size_t))))
 		return (put_in(size, struct_singleton()->big, SIZE_M));
 	else
 	{
 		if (struct_singleton()->other == NULL)
 		{
-	if ((struct_singleton()->other =  mmap(NULL, sizeof(t_mal) + 1 + sizeof(size_t) + size, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
+			if ((struct_singleton()->other =  mmap(NULL, sizeof(t_mal) + 1 + sizeof(size_t) + size, PROT_WRITE|PROT_READ,MAP_PRIVATE|MAP_ANON, -1, 0)) == NULL)
 				exit (1);
 			struct_singleton()->other->dispo = size;
 		}

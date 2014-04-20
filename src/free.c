@@ -57,9 +57,9 @@ void	ft_free(void *ptr)
 
 	tmp = (char*)ptr;
 	len = *(size_t*)(tmp - sizeof(size_t));
-	if (len < (SIZE_N / 100))
+	if (len < (SIZE_N / (100 - 1 - sizeof(size_t))))
 		supprim(ptr, &struct_singleton()->small, SIZE_N, len);
-	else if (len < (SIZE_M / 100))
+	else if (len < (SIZE_M / (100 - 1 - sizeof(size_t))))
 		supprim(ptr, &struct_singleton()->big, SIZE_M, len);
 	else
 		supprim(ptr, &struct_singleton()->other, len, len);
