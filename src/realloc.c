@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 05:13:44 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 09:02:27 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 11:58:54 by amerle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-void	*ft_realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
 	char	*tmp;
 	size_t	*old;
@@ -40,7 +40,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	{
 		new = malloc(size);
 		ft_memcpy(new, ptr, *old);
-		ft_free(ptr);
+		free(ptr);
 		ptr = new;
 	}
 	return (ptr);

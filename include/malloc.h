@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 07:57:14 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 09:03:05 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 11:59:06 by amerle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ struct					s_struct
 };
 
 void					show_alloc_mem(void);
-void					ft_free(void *ptr);
-void					*ft_realloc(void *ptr, size_t size);
+void					free(void *ptr);
+void					*realloc(void *ptr, size_t size);
 void					*malloc(size_t size);
 void					*ft_memcpy(void *s1, const void *s2, size_t n);
 void					ft_putaddr(void *ptr);

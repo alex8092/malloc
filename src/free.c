@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 05:13:31 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 09:00:20 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 11:58:36 by amerle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 		maj(ptr, size, prev_size, cur);
 }
 
-void			ft_free(void *ptr)
+void			free(void *ptr)
 {
 	char	*tmp;
 	size_t	len;
