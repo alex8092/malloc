@@ -6,7 +6,7 @@
 /*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/04/20 05:13:38 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 07:55:29 by thrivier         ###   ########.fr       */
+/*   Updated: 2014/04/20 10:13:43 by thrivier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char		*ft_find_where(t_mal *cur, size_t len, size_t size)
 		return (tmp);
 }
 
-void			*put_in(size_t size, t_mal *cur, size_t len)
+static void			*put_in(size_t size, t_mal *cur, size_t len)
 {
 	char	*tmp;
 	t_mal	*prev;
