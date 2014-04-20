@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -Iinclude -g3
 
 LDFLAGS = -lft_malloc -L.
 
-NAME = libft_malloc.a
+NAME = libft_malloc.so
 
 SRCS = 	malloc.c \
 		struc.c \
@@ -24,11 +24,13 @@ all: $(NAME)
 
 test: $(NAME) $(OBJS_TEST)
 	$(CC) -o tests/test.bin $(OBJS_TEST) $(LDFLAGS)
-	./tests/test.bin
+	(export DYLD_LIBRARY_PATH=. ; \
+	export DYLD_INSERT_LIBRARIES=$(NAME) ; \
+	export DYLD_FORCE_FLAT_NAMESPACE=1 ; \
+	ls -lRa .)
 
 $(NAME): $(OBJS)
-	ar rc $@ $^
-	ranlib $@
+	$(CC) -shared -o $@ $^
 
 obj/%.o: src/%.c
 	mkdir -p obj
