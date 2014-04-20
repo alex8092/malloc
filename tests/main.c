@@ -12,13 +12,13 @@ int	main(void)
 	{
 
 		str = malloc(5000000000);
-		ft_realloc(str, 500000);
+//		ft_realloc(str, 5);
 //		str = malloc(2000);
 //		str = malloc(50000);
 //		for (y = 0; y < 200; y++)
 //			str[y] = 'a';
 //		str[y] = 0;
-		ft_free(str);
+//		ft_free(str);
 	}
 	show_alloc_mem();
 	return (0);
