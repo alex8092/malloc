@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/04/20 05:13:38 by thrivier          #+#    #+#             */
+/*   Updated: 2014/04/20 06:13:03 by thrivier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "malloc.h"
@@ -8,6 +20,7 @@
 
 void	*put_in(size_t size, t_mal *cur, size_t len)
 {
+	printf("j'entre\n");
 	char *tmp;
 	t_mal *prev;
 	size_t	old;

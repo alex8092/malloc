@@ -23,8 +23,16 @@ struct			s_struct
 
 void		show_alloc_mem(void);
 void		ft_free(void *ptr);
-void	*ft_realloc(void *ptr, size_t size);
+void		*ft_realloc(void *ptr, size_t size);
 void		*malloc(size_t size);
+void		*ft_memcpy(void *s1, const void *s2, size_t n);
+void		ft_putaddr(void *ptr);
+void		ft_putchar(char c);
+int			ft_strlen(char *str);
+void		ft_putstr(char *str);
+void		ft_putnbr(size_t  n);
+
+
 t_struct	*struct_singleton(void);
 
 #endif

@@ -11,7 +11,8 @@ SRCS = 	malloc.c \
 		show.c \
 		free.c \
 		realloc.c \
-
+		ft_memcpy.c \
+		ft_putaddr.c
 SRCS_TEST = main.c
 
 OBJS = $(addprefix obj/,$(SRCS:.c=.o))

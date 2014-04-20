@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realloc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/04/20 05:13:44 by thrivier          #+#    #+#             */
+/*   Updated: 2014/04/20 05:53:39 by thrivier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "malloc.h"
@@ -11,20 +23,25 @@ void	*ft_realloc(void *ptr, size_t size)
 	char	*tmp;
 	size_t	*old_size;
 	size_t	*next;
+	void	*new;
 
-	printf("test\n");
 	tmp = (char*)ptr;
 	old_size = (size_t*)(tmp - sizeof(size_t));
-	next =  (size_t*)(tmp + 1 + *(size_t*)(tmp - sizeof(size_t)));
-	if (size >= *(size_t*)(tmp - sizeof(size_t)))
+	if (size == *old_size)
 		return (ptr);
-	printf("test2\n");
-	if (*(tmp + *old_size) == 'd' && *old_size + *next >= size)
+	next = (size_t*)(tmp + 1 + *(size_t*)(tmp - sizeof(size_t)));
+	if ((*(tmp + *old_size) == 'd' && *old_size + *next >= size) || size < *old_size)
 	{
-		printf("lolol\n");
+		*(size_t*)(tmp + size + 1) = (*old_size + *next - size);
 		*old_size = size;
 		*(tmp + size) = 'd';
-		*(size_t*)(tmp + size + 1) = (*old_size + *next - size);
+	}
+	else
+	{
+		new = malloc(size);
+		ft_memcpy(new, ptr, *old_size);
+		ft_free(ptr);
+		ptr = new;
 	}
 	return (ptr);
 }
