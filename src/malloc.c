@@ -89,7 +89,7 @@ static void		*put_in(size_t size, t_mal *cur, size_t len)
 	return (tmp + 1 + SIZE_T);
 }
 
-void			*malloc(size_t size)
+void			*ft_malloc(size_t size)
 {
 	if (size < (SIZE_N / (100 - 1 - SIZE_T)))
 		return (put_in(size, struct_singleton()->small, SIZE_N));

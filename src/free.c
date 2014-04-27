@@ -87,7 +87,7 @@ static void		supprim(void *ptr, t_mal **begin, size_t len, size_t size)
 		maj(ptr, size, prev_size, cur);
 }
 
-void			free(void *ptr)
+void			ft_free(void *ptr)
 {
 	char	*tmp;
 	size_t	len;

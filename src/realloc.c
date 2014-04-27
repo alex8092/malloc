@@ -58,7 +58,7 @@ int		is_mine(void *ptr)
 	return (ret);
 }
 
-void	*realloc(void *ptr, size_t size)
+void	*ft_realloc(void *ptr, size_t size)
 {
 	size_t	*old;
 	size_t	*next;
@@ -78,9 +78,9 @@ void	*realloc(void *ptr, size_t size)
 	}
 	else
 	{
-		new = malloc(size);
+		new = ft_malloc(size);
 		ft_memcpy(new, ptr, *old);
-		free(ptr);
+		ft_free(ptr);
 		ptr = new;
 	}
 	return (ptr);

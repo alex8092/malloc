@@ -9,7 +9,7 @@ int	main(void)
 //	long int	y;
 
 	for (i = 0; i < 2000; ++i)
-		str = malloc(50);
+		str = ft_malloc(50);
 	show_alloc_mem();
 	return (0);
 }
