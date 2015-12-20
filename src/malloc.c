@@ -1,108 +1,59 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: thrivier <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/04/20 05:13:38 by thrivier          #+#    #+#             */
-/*   Updated: 2014/04/20 18:23:09 by thrivier         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
-#include <stdio.h>
 #include "malloc.h"
 #include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
-static void		actualisation(t_mal *cur, char *tmp, size_t size)
+static void		ft_calc_sizes(t_mc *mc)
 {
-	size_t	old;
+	mc->small_alloc = (SMALL_SZMAX + sizeof(t_item)) * 100;
+	mc->small_alloc += sizeof(t_range);
+	mc->tiny_alloc = (TINY_SZMAX + sizeof(t_item)) * 100;
+	mc->tiny_alloc += sizeof(t_range);
+	mc->small_alloc += (mc->small_alloc % mc->pgsize);
+	mc->tiny_alloc += (mc->tiny_alloc % mc->pgsize);
+}
 
-	*tmp = 'i';
-	cur->dispo -= size + 1 + SIZE_T;
-	old = *(size_t*)(tmp + 1);
-	*(size_t*)(tmp + 1) = size;
-	if (old - size - 2 * (1 + SIZE_T) > 0)
+t_mc			*ft_mc_get_instance(void)
+{
+	static t_mc	instance;
+	static int	init = 0;
+
+	if (!init)
 	{
-		*(tmp + 1 + SIZE_T + size) = 'd';
-		*(size_t*)(tmp + 2 + SIZE_T + size) = old - size - 1 - SIZE_T;
+		instance.pgsize = getpagesize();
+		instance.small = 0;
+		instance.tiny = 0;
+		instance.big = 0;
+		ft_calc_sizes(&instance);
+		instance.total = 0;
+		init = 1;
 	}
+	return (&instance);
 }
 
-static t_mal	*add_zone(t_mal **prev, size_t len, char **tmp)
+void			*malloc(size_t size)
 {
-	t_mal	*cur;
-
-	cur = *prev;
-	if ((*prev = NEW(len)) == NULL)
-		exit (1);
-	if (!cur)
-		cur = *prev;
+	if (!size)
+		return (0);
+	if (size < TINY_SZMAX)
+		return (ft_mc_alloc_tiny(size));
+	else if (size < SMALL_SZMAX)
+		return (ft_mc_alloc_small(size));
 	else
-		cur->next = *prev;
-	*tmp = (char*)*prev + sizeof(t_mal);
-	**tmp = 'd';
-	*(size_t*)(*tmp + 1) = len - 1 - SIZE_T;
-	cur = *prev;
-	cur->dispo = len + 1 + SIZE_T;
-	return (cur);
+		return (ft_mc_alloc_big(size));
 }
 
-static char		*ft_find_where(t_mal *cur, size_t len, size_t size)
+void			free(void *ptr)
 {
-	char	*tmp;
+	static t_mc		*mc = 0;
+	t_range			*range;
 
-	if (cur->dispo < (size + 1 + SIZE_T))
-		return (NULL);
-	tmp = (char*)cur + sizeof(t_mal);
-	while ((NEXT_PTR < LAST_PTR) && CAN_PUT)
-		tmp += 1 + SIZE_T + *(size_t*)(tmp + 1);
-	if (NEXT_PTR >= (char*)cur + sizeof(t_mal) + 1 + sizeof(size_t) + len)
-		return (NULL);
-	else
-		return (tmp);
-}
-
-static void		*put_in(size_t size, t_mal *cur, size_t len)
-{
-	char	*tmp;
-	t_mal	*prev;
-
-	prev = NULL;
-	while (cur)
-	{
-		if ((tmp = ft_find_where(cur, len, size)) != NULL)
-			break ;
-		else
-		{
-			prev = cur;
-			cur = cur->next;
-		}
-	}
-	if (!cur)
-		cur = add_zone(&prev, len, &tmp);
-	actualisation(cur, tmp, size);
-	return (tmp + 1 + SIZE_T);
-}
-
-void			*ft_malloc(size_t size)
-{
-	if (size < (SIZE_N / (100 - 1 - SIZE_T)))
-		return (put_in(size, struct_singleton()->small, SIZE_N));
-	else if (size < (SIZE_M / (100 - 1 - SIZE_T)))
-		return (put_in(size, struct_singleton()->big, SIZE_M));
-	else
-	{
-		if (struct_singleton()->other == NULL)
-		{
-			if ((struct_singleton()->other = NEW(size)) == NULL)
-				exit (1);
-			struct_singleton()->other->dispo = size;
-		}
-		return (put_in(size, struct_singleton()->other, size));
-	}
+	if (!mc)
+		mc = ft_mc_get_instance();
+	range = ft_mc_find_ptr(mc->tiny, ptr);
+	if (!range)
+		range = ft_mc_find_ptr(mc->small, ptr);
+	if (!range)
+		range = ft_mc_find_ptr(mc->big, ptr);
+	if (!range)
+		return ;
+	ft_mc_free_item(range, (t_item *)(range + sizeof(t_range)));
 }

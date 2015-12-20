@@ -18,13 +18,7 @@ LDFLAGS = -lft_malloc -L.
 
 
 
-SRCS = 	malloc.c \
-		struc.c \
-		show.c \
-		free.c \
-		realloc.c \
-		ft_memcpy.c \
-		ft_putaddr.c
+SRCS = 	malloc.c alloc.c range.c check.c free.c
 
 SRCS_TEST = main.c
 
@@ -48,10 +42,10 @@ ft_test: $(NAME) $(OBJS_TEST)
 
 test: $(NAME) $(OBJS_TEST)
 	$(CC) -o tests/test.bin $(OBJS_TEST) $(LDFLAGS)
-	(export DYLD_LIBRARY_PATH=.  \
-	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT)  \
-	export DYLD_FORCE_FLAT_NAMESPACE=1  \
-	 )
+	(export DYLD_LIBRARY_PATH=. ; \
+	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT) ; \
+	export DYLD_FORCE_FLAT_NAMESPACE=1 ; \
+	./tests/test.bin)
 
 $(NAME): $(OBJS)
 	$(CC) -shared -o $@ $^
