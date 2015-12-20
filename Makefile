@@ -12,13 +12,13 @@
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -g3
+CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC -g3
 
 LDFLAGS = -lft_malloc -L.
 
 
 
-SRCS = 	malloc.c alloc.c range.c check.c free.c
+SRCS = 	malloc.c alloc.c range.c check.c free.c realloc.c
 
 SRCS_TEST = main.c
 

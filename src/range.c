@@ -6,7 +6,7 @@ static void			nonfree_item(t_item *it, size_t size)
 {
 	t_item			*next;
 
-	next = (t_item *)(it + sizeof(t_item) + size);
+	next = (void *)it + sizeof(t_item) + size;
 	if (size != it->size && it->size - size >= sizeof(t_item))
 	{
 		next->free = 1;
@@ -26,17 +26,16 @@ void				*ft_mc_range_insert(t_range *range, size_t size)
 {
 	t_item	*current;
 
-	current = (t_item *)(range + sizeof(t_range));
-	while ((void *)current < (void *)(range + range->size + sizeof(t_range)))
+	current = (void *)range + sizeof(t_range);
+	while ((void *)current < (void *)range + range->size + sizeof(t_range))
 	{
-		// printf("item free(%d) size(%zu)\n", current->free, current->size);
 		if (current->free && current->size >= size)
 		{
 			nonfree_item(current, size);
 			ft_mc_update_free_space(range);
-			return (current + sizeof(t_item));
+			return ((void *)current + sizeof(t_item));
 		}
-		current = (t_item *)(current + sizeof(t_item) + current->size);
+		current = (void *)current + sizeof(t_item) + current->size;
 	}
 	return (0);
 }
@@ -58,15 +57,17 @@ t_range				*ft_mc_find_free(t_range *range, size_t size, size_t rsize)
 	newrange = mmap(0, rsize, MAP_PROT, MAP_ACCESS, -1, 0);
 	if (!newrange)
 		return (0);
+	++ft_mc_get_instance()->npage;
 	newrange->size = rsize - sizeof(t_range);
 	newrange->free = newrange->size - sizeof(t_item);
 	newrange->next = 0;
-	item = (t_item *)(newrange + sizeof(t_range));
+	item = (void *)newrange + sizeof(t_range);
 	item->size = newrange->free;
 	item->free = 1;
 	item->prev = 0;
 	if (last)
 		last->next = newrange;
+	newrange->prev = last;
 	return (newrange);
 }
 
@@ -78,11 +79,26 @@ t_range				*ft_mc_find_ptr(t_range *range, void *ptr)
 	current = range;
 	while (current)
 	{
-		ptr2 = (current + sizeof(t_range));
-		// printf("check (%p) with (%p)\n", ptr, ptr2);
+		ptr2 = (void *)current + sizeof(t_range);
 		if (ptr >= ptr2 && ptr < ptr2 + current->size)
 			return (range);
 		current = current->next;
+	}
+	return (0);
+}
+
+t_item				*ft_mc_find_item(t_range *range, void *ptr)
+{
+	t_item	*current;
+	void	*end;
+
+	end = (void *)range + sizeof(t_range) + range->size;
+	current = (void *)range + sizeof(t_range);
+	while ((void *)current < end)
+	{
+		if ((void *)current + sizeof(t_item) == ptr)
+			return (current);
+		current = (void *)current + sizeof(t_item) + current->size;
 	}
 	return (0);
 }

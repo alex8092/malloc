@@ -8,9 +8,9 @@ int	main(void)
 	long int	i;
 	long int	y;
 
-	for (i = 0; i < 10; ++i)
+	for (i = 0; i < 1024; ++i)
 	{
-		str = malloc(i * 10000);
+		str = malloc(1024);
 		if (str)
 		{
 			for (y = 0; y < 200; ++y)
@@ -18,6 +18,7 @@ int	main(void)
 			free(str);
 		}
 	}
+	printf("npage: %zu\n", ft_mc_get_instance()->npage);
 	// show_alloc_mem();
 	return (0);
 }

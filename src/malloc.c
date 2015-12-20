@@ -22,6 +22,7 @@ t_mc			*ft_mc_get_instance(void)
 		instance.small = 0;
 		instance.tiny = 0;
 		instance.big = 0;
+		instance.npage = 0;
 		ft_calc_sizes(&instance);
 		instance.total = 0;
 		init = 1;
@@ -33,9 +34,9 @@ void			*malloc(size_t size)
 {
 	if (!size)
 		return (0);
-	if (size < TINY_SZMAX)
+	if (size <= TINY_SZMAX)
 		return (ft_mc_alloc_tiny(size));
-	else if (size < SMALL_SZMAX)
+	else if (size <= SMALL_SZMAX)
 		return (ft_mc_alloc_small(size));
 	else
 		return (ft_mc_alloc_big(size));
@@ -45,6 +46,7 @@ void			free(void *ptr)
 {
 	static t_mc		*mc = 0;
 	t_range			*range;
+	t_item			*it;
 
 	if (!mc)
 		mc = ft_mc_get_instance();
@@ -55,5 +57,25 @@ void			free(void *ptr)
 		range = ft_mc_find_ptr(mc->big, ptr);
 	if (!range)
 		return ;
-	ft_mc_free_item(range, (t_item *)(range + sizeof(t_range)));
+	it = ft_mc_find_item(range, ptr);
+	if (it)
+		ft_mc_free_item(range, it);
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	static t_mc	*mc = 0;
+	t_range		*range;
+	t_item		*it;
+
+	if (!mc)
+		mc = ft_mc_get_instance();
+	if (!(range = ft_mc_find_ptr(mc->tiny, ptr)))
+		range = ft_mc_find_ptr(mc->small, ptr);
+	if (!(range = ft_mc_find_ptr(mc->big, ptr)))
+		return (0);
+	if (!(it = ft_mc_find_item(range, ptr)))
+		return (0);
+	(void)size;
+	return (it);
 }

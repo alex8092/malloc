@@ -24,6 +24,7 @@ struct				s_range
 	size_t			free;
 	size_t			size;
 	t_range			*next;
+	t_range			*prev;
 };
 
 typedef struct		s_mc
@@ -31,6 +32,7 @@ typedef struct		s_mc
 	t_range			*small;
 	t_range			*tiny;
 	t_range			*big;
+	size_t			npage;
 	int				pgsize;
 	size_t			small_alloc;
 	size_t			tiny_alloc;
@@ -57,6 +59,7 @@ void				*ft_mc_alloc_big(size_t size);
 t_range				*ft_mc_find_free(t_range *range, size_t size, size_t rsize);
 void				*ft_mc_range_insert(t_range *range, size_t size);
 t_range				*ft_mc_find_ptr(t_range *range, void *ptr);
+t_item				*ft_mc_find_item(t_range *range, void *ptr);
 
 /*
 ** check.c
@@ -67,5 +70,10 @@ void				ft_mc_update_free_space(t_range *range);
 ** free.c
 */
 void				ft_mc_free_item(t_range *range, t_item *item);
+
+/*
+** realloc.c
+*/
+// int					
 
 #endif
