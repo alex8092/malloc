@@ -6,7 +6,7 @@
 #    By: thrivier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/04/20 13:43:59 by thrivier          #+#    #+#              #
-#    Updated: 2015/12/21 02:55:59 by amerle           ###   ########.fr        #
+#    Updated: 2015/12/21 08:39:24 by amerle           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(NAME_SHORT)
+	rm -f tests/test.bin
 
 re: fclean all
 
