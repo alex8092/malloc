@@ -72,10 +72,9 @@ void			*realloc(void *ptr, size_t size)
 		mc = ft_mc_get_instance();
 	if (!(range = ft_mc_find_ptr(mc->tiny, ptr)))
 		range = ft_mc_find_ptr(mc->small, ptr);
-	if (!(range = ft_mc_find_ptr(mc->big, ptr)))
+	if (!range && !(range = ft_mc_find_ptr(mc->big, ptr)))
 		return (0);
 	if (!(it = ft_mc_find_item(range, ptr)))
 		return (0);
-	(void)size;
-	return (it);
+	return (ft_mc_realloc(range, it, size));
 }

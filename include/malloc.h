@@ -45,6 +45,7 @@ typedef struct		s_mc
 t_mc				*ft_mc_get_instance(void);
 void				*malloc(size_t size);
 void				free(void *ptr);
+void				*realloc(void *ptr, size_t size);
 
 /*
 ** alloc.c
@@ -74,6 +75,6 @@ void				ft_mc_free_item(t_range *range, t_item *item);
 /*
 ** realloc.c
 */
-// int					
+void				*ft_mc_realloc(t_range *range, t_item *it, size_t size);					
 
 #endif

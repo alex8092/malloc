@@ -5,7 +5,6 @@ void		ft_mc_free_item(t_range *range, t_item *item)
 {
 	t_item	*next;
 
-	// printf("free\n");
 	if (item->prev && item->prev->free)
 		item->prev->size += item->size + sizeof(t_item);
 	else

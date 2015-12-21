@@ -6,13 +6,13 @@
 #    By: thrivier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/04/20 13:43:59 by thrivier          #+#    #+#              #
-#    Updated: 2014/04/20 18:25:45 by thrivier         ###   ########.fr        #
+#    Updated: 2015/12/21 01:24:54 by amerle           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC -g3
+CFLAGS = -Wall -Wextra -Iinclude -fPIC -g3
 
 LDFLAGS = -lft_malloc -L.
 
@@ -45,7 +45,7 @@ test: $(NAME) $(OBJS_TEST)
 	(export DYLD_LIBRARY_PATH=. ; \
 	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT) ; \
 	export DYLD_FORCE_FLAT_NAMESPACE=1 ; \
-	./tests/test.bin)
+	valgrind ./tests/test.bin)
 
 $(NAME): $(OBJS)
 	$(CC) -shared -o $@ $^
@@ -65,6 +65,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME_SHORT)
 
 re: fclean all
 

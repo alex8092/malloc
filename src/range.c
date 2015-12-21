@@ -10,10 +10,7 @@ static void			nonfree_item(t_item *it, size_t size)
 	if (size != it->size && it->size - size >= sizeof(t_item))
 	{
 		next->free = 1;
-		if (it->size - size - sizeof(t_item) == 0)
-			next->size = 0;
-		else
-			next->size = it->size - size - sizeof(t_item);
+		next->size = it->size - size - sizeof(t_item);
 		next->prev = it;
 	}
 	else if (size != it->size)
