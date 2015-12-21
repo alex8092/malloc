@@ -42,26 +42,6 @@ void			*malloc(size_t size)
 		return (ft_mc_alloc_big(size));
 }
 
-void			free(void *ptr)
-{
-	static t_mc		*mc = 0;
-	t_range			*range;
-	t_item			*it;
-
-	if (!mc)
-		mc = ft_mc_get_instance();
-	range = ft_mc_find_ptr(mc->tiny, ptr);
-	if (!range)
-		range = ft_mc_find_ptr(mc->small, ptr);
-	if (!range)
-		range = ft_mc_find_ptr(mc->big, ptr);
-	if (!range)
-		return ;
-	it = ft_mc_find_item(range, ptr);
-	if (it)
-		ft_mc_free_item(range, it);
-}
-
 void			*realloc(void *ptr, size_t size)
 {
 	static t_mc	*mc = 0;

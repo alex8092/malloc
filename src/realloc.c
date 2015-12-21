@@ -19,9 +19,9 @@ static void		*ft_do_realloc_next(t_range *range, t_item *it, size_t size)
 	{
 		prev_size = next->size;
 		next = (void *)it + size + sizeof(t_item);
-		next->free = 1;
 		next->size = prev_size - (size - it->size);
 		next->prev = it;
+		ft_mc_free_item(range, next);
 		tmp = next;
 		next = (void *)it + size + sizeof(t_item);
 		if ((void *)next < (void *)range + sizeof(t_range) + range->size)
@@ -73,9 +73,9 @@ void			*ft_mc_realloc(t_range *range, t_item *it, size_t size)
 		if (it->size - size >= sizeof(t_item))
 		{
 			tmp = (void *)it + sizeof(t_item) + size;
-			tmp->free = 1;
 			tmp->size = it->size - size - sizeof(t_item);
 			tmp->prev = it;
+			ft_mc_free_item(range, tmp);
 		}
 		it->size = size;
 		return ((void *)it + sizeof(t_item));

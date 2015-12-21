@@ -3,11 +3,13 @@
 
 # include <unistd.h>
 
-# define TINY_SZMAX		1024
-# define SMALL_SZMAX	8192
+# define TINY_SZMAX			1024
+# define SMALL_SZMAX		8192
 
-# define MAP_PROT		PROT_WRITE | PROT_READ
-# define MAP_ACCESS		MAP_PRIVATE | MAP_ANON
+# define MAP_PROT			PROT_WRITE | PROT_READ
+# define MAP_ACCESS			MAP_PRIVATE | MAP_ANON
+
+# define SHOW_FREE_SPACE	0
 
 typedef struct s_item	t_item;
 typedef struct s_range	t_range;
@@ -63,9 +65,10 @@ t_range				*ft_mc_find_ptr(t_range *range, void *ptr);
 t_item				*ft_mc_find_item(t_range *range, void *ptr);
 
 /*
-** check.c
+** release.c
 */
 void				ft_mc_update_free_space(t_range *range);
+t_range				*ft_mc_release_free_range(t_range *range);
 
 /*
 ** free.c
@@ -84,5 +87,10 @@ void				ft_putaddr(void *ptr);
 void				ft_putstr(const char *str);
 void				ft_putchar(char c);
 void				ft_putnbr(size_t n);
+
+/*
+** show_alloc_mem.c
+*/
+void				show_alloc_mem(void);
 
 #endif

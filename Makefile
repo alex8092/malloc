@@ -12,13 +12,13 @@
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Iinclude -fPIC -g3
+CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC -g3
 
 LDFLAGS = -lft_malloc -L.
 
 
 
-SRCS = 	malloc.c alloc.c range.c check.c free.c realloc.c show_alloc_mem.c \
+SRCS = 	malloc.c alloc.c range.c release.c free.c realloc.c show_alloc_mem.c \
 		putaddr.c
 
 SRCS_TEST = main.c
@@ -53,11 +53,11 @@ $(NAME): $(OBJS)
 	rm -f $(NAME_SHORT)
 	ln -s $@ $(NAME_SHORT)
 
-obj/%.o: src/%.c
+obj/%.o: src/%.c include/malloc.h
 	mkdir -p obj
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-obj/%.o: tests/%.c
+obj/%.o: tests/%.c include/malloc.h
 	mkdir -p obj
 	$(CC) -o $@ -c $< $(CFLAGS)
 

@@ -9,9 +9,9 @@ static void			print(const char *before, t_range *range)
 	ft_putaddr((void *)range + sizeof(t_range));
 	ft_putstr("\n");
 	current = (void *)range + sizeof(t_range);
-	while (current < (void *)range + sizeof(t_range) + range->size)
+	while ((void *)current < (void *)range + sizeof(t_range) + range->size)
 	{
-		if (!current->free)
+		if (!current->free || SHOW_FREE_SPACE)
 		{
 			ft_putaddr((void *)current + sizeof(t_item));
 			ft_putstr(" - ");
