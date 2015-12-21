@@ -68,6 +68,11 @@ void			*ft_mc_realloc(t_range *range, t_item *it, size_t size)
 {
 	t_item		*tmp;
 
+	if (!size)
+	{
+		free((void *)it + sizeof(t_item));
+		return (0);
+	}
 	if (size < it->size)
 	{
 		if (it->size - size >= sizeof(t_item))

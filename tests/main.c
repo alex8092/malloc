@@ -15,7 +15,7 @@ int	main(void)
 		{
 			for (y = 0; y < 10; ++y)
 				str[y] = y % 26 + 65;
-			str = realloc(str, 150);
+			str = realloc(str, 0);
 			// for (y = 10; y < 20; ++y)
 				// str[y] = y % 26 + 65;
 			// printf("str: %s\n", str);
