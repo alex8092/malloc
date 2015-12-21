@@ -6,13 +6,13 @@
 #    By: thrivier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/04/20 13:43:59 by thrivier          #+#    #+#              #
-#    Updated: 2015/12/21 08:39:24 by amerle           ###   ########.fr        #
+#    Updated: 2015/12/21 08:53:03 by amerle           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC -g3
+CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC
 
 LDFLAGS = -lft_malloc -L. -lpthread
 
