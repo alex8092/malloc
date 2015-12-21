@@ -8,23 +8,21 @@ int	main(void)
 	long int	i;
 	long int	y;
 
-	for (i = 0; i < 1024; ++i)
+	for (i = 0; i < 1; ++i)
 	{
-		str = malloc(10);
+		str = malloc(3000);
 		if (str)
 		{
 			for (y = 0; y < 10; ++y)
 				str[y] = y % 26 + 65;
-			str = realloc(str, 20);
-			if (!str)
-				printf("fail !\n");
-			for (y = 10; y < 20; ++y)
-				str[y] = y % 26 + 65;
-			printf("str: %s\n", str);
-			free(str);
+			str = realloc(str, 1500000);
+			// for (y = 10; y < 20; ++y)
+				// str[y] = y % 26 + 65;
+			// printf("str: %s\n", str);
+			// free(str);
 		}
 	}
-	printf("npage: %zu\n", ft_mc_get_instance()->npage);
 	show_alloc_mem();
+	// printf("npage: %zu\n", ft_mc_get_instance()->npage);
 	return (0);
 }

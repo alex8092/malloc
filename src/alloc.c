@@ -34,10 +34,12 @@ void				*ft_mc_alloc_big(size_t size)
 {
 	static t_mc		*mc = 0;
 	t_range			*range;
+	size_t			rsize;
 
 	if (!mc)
 		mc = ft_mc_get_instance();
-	range = ft_mc_find_free(mc->big, size, size);
+	rsize = size + sizeof(t_range) + sizeof(t_item);
+	range = ft_mc_find_free(mc->big, size, rsize);
 	if (!range)
 		return (0);
 	if (!mc->big)

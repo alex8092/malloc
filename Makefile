@@ -6,7 +6,7 @@
 #    By: thrivier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/04/20 13:43:59 by thrivier          #+#    #+#              #
-#    Updated: 2015/12/21 01:24:54 by amerle           ###   ########.fr        #
+#    Updated: 2015/12/21 02:55:59 by amerle           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LDFLAGS = -lft_malloc -L.
 
 
 
-SRCS = 	malloc.c alloc.c range.c check.c free.c realloc.c
+SRCS = 	malloc.c alloc.c range.c check.c free.c realloc.c show_alloc_mem.c \
+		putaddr.c
 
 SRCS_TEST = main.c
 
@@ -45,7 +46,7 @@ test: $(NAME) $(OBJS_TEST)
 	(export DYLD_LIBRARY_PATH=. ; \
 	export DYLD_INSERT_LIBRARIES=$(NAME_SHORT) ; \
 	export DYLD_FORCE_FLAT_NAMESPACE=1 ; \
-	valgrind ./tests/test.bin)
+	./tests/test.bin)
 
 $(NAME): $(OBJS)
 	$(CC) -shared -o $@ $^

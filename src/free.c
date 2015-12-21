@@ -11,21 +11,16 @@ void		ft_mc_free_item(t_range *range, t_item *item)
 	{
 		item->free = 1;
 		next = item;
-		while (1)
+		next = (void *)next + sizeof(t_item) + next->size;
+		if ((void *)next < (void *)range + sizeof(t_range) + range->size)
 		{
-			next = (void *)next + sizeof(t_item) + next->size;
-			if ((void *)next >= (void *)range + sizeof(t_range) + range->size)
-				break ;
 			if (next->free)
 			{
 				item->size += next->size + sizeof(t_item);
 				next = (void *)next + sizeof(t_item) + next->size;
 			}
 			else
-			{
 				next->prev = item;
-				break ;
-			}
 		}
 	}
 	ft_mc_update_free_space(range);

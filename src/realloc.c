@@ -38,6 +38,8 @@ static void		*ft_alloc_new(t_item *it, size_t size)
 	size_t		i;
 
 	ptr = (char *)malloc(size);
+	if (!ptr)
+		return (ptr);
 	ptr2 = (char *)it + sizeof(t_item);
 	i = 0;
 	while (i < it->size)
@@ -66,7 +68,6 @@ void			*ft_mc_realloc(t_range *range, t_item *it, size_t size)
 {
 	t_item		*tmp;
 
-	printf("in\n");
 	if (size < it->size)
 	{
 		if (it->size - size >= sizeof(t_item))

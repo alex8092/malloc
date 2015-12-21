@@ -77,4 +77,12 @@ void				ft_mc_free_item(t_range *range, t_item *item);
 */
 void				*ft_mc_realloc(t_range *range, t_item *it, size_t size);					
 
+/*
+** putaddr.c
+*/
+void				ft_putaddr(void *ptr);
+void				ft_putstr(const char *str);
+void				ft_putchar(char c);
+void				ft_putnbr(size_t n);
+
 #endif
