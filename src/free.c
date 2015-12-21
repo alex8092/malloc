@@ -33,17 +33,22 @@ void			free(void *ptr)
 
 	if (!mc)
 		mc = ft_mc_get_instance();
+	pthread_mutex_lock(&mc->maccess);
 	range = ft_mc_find_ptr(mc->tiny, ptr);
 	if (!range)
 		range = ft_mc_find_ptr(mc->small, ptr);
 	if (!range)
 		range = ft_mc_find_ptr(mc->big, ptr);
 	if (!range)
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return ;
+	}
 	it = ft_mc_find_item(range, ptr);
 	if (it)
 		ft_mc_free_item(range, it);
 	mc->tiny = ft_mc_release_free_range(mc->tiny);
 	mc->small = ft_mc_release_free_range(mc->small);
 	mc->big = ft_mc_release_free_range(mc->big);
+	pthread_mutex_unlock(&mc->maccess);
 }

@@ -18,6 +18,9 @@ t_mc			*ft_mc_get_instance(void)
 
 	if (!init)
 	{
+		pthread_mutexattr_init(&instance.mattr);
+		pthread_mutexattr_settype(&instance.mattr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&instance.maccess, &instance.mattr);
 		instance.pgsize = getpagesize();
 		instance.small = 0;
 		instance.tiny = 0;
@@ -32,14 +35,31 @@ t_mc			*ft_mc_get_instance(void)
 
 void			*malloc(size_t size)
 {
+	static t_mc	*mc = 0;
+
+	if (!mc)
+		mc = ft_mc_get_instance();
+	pthread_mutex_lock(&mc->maccess);
 	if (!size)
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (0);
+	}
 	if (size <= TINY_SZMAX)
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (ft_mc_alloc_tiny(size));
+	}
 	else if (size <= SMALL_SZMAX)
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (ft_mc_alloc_small(size));
+	}
 	else
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (ft_mc_alloc_big(size));
+	}
 }
 
 void			*realloc(void *ptr, size_t size)
@@ -50,11 +70,20 @@ void			*realloc(void *ptr, size_t size)
 
 	if (!mc)
 		mc = ft_mc_get_instance();
+	pthread_mutex_lock(&mc->maccess);
 	if (!(range = ft_mc_find_ptr(mc->tiny, ptr)))
 		range = ft_mc_find_ptr(mc->small, ptr);
 	if (!range && !(range = ft_mc_find_ptr(mc->big, ptr)))
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (0);
+	}
 	if (!(it = ft_mc_find_item(range, ptr)))
+	{
+		pthread_mutex_unlock(&mc->maccess);
 		return (0);
-	return (ft_mc_realloc(range, it, size));
+	}
+	ptr = ft_mc_realloc(range, it, size);
+	pthread_mutex_unlock(&mc->maccess);
+	return (ptr);
 }

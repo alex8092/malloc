@@ -14,9 +14,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -Iinclude -fPIC -g3
 
-LDFLAGS = -lft_malloc -L.
-
-
+LDFLAGS = -lft_malloc -L. -lpthread
 
 SRCS = 	malloc.c alloc.c range.c release.c free.c realloc.c show_alloc_mem.c \
 		putaddr.c
