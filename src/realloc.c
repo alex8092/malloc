@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realloc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amerle <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/21 08:54:04 by amerle            #+#    #+#             */
+/*   Updated: 2015/12/21 08:56:56 by amerle           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 #include <stdio.h>
 
@@ -8,9 +20,8 @@ static void		*ft_do_realloc_next(t_range *range, t_item *it, size_t size)
 	size_t		prev_size;
 
 	next = (void *)it + it->size + sizeof(t_item);
-	if (next->size + sizeof(t_item) == size - it->size)
+	if (next->size + sizeof(t_item) == size - it->size && (it->size = size))
 	{
-		it->size = size;
 		next = (void *)next + next->size + sizeof(t_item);
 		if ((void *)next < (void *)range + sizeof(t_range) + range->size)
 			next->prev = it;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   range.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amerle <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/21 08:54:02 by amerle            #+#    #+#             */
+/*   Updated: 2015/12/21 08:55:17 by amerle           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
 #include <sys/mman.h>
 #include <stdio.h>
@@ -44,15 +56,13 @@ t_range				*ft_mc_find_free(t_range *range, size_t size, size_t rsize)
 	t_item			*item;
 
 	last = 0;
-	while (range)
+	while ((last = range))
 	{
-		last = range;
 		if (range->free >= size)
 			return (range);
 		range = range->next;
 	}
-	newrange = mmap(0, rsize, MAP_PROT, MAP_ACCESS, -1, 0);
-	if (!newrange)
+	if (!(newrange = mmap(0, rsize, MAP_PROT, MAP_ACCESS, -1, 0)))
 		return (0);
 	++ft_mc_get_instance()->npage;
 	newrange->size = rsize - sizeof(t_range);

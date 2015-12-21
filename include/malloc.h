@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amerle <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/21 08:55:28 by amerle            #+#    #+#             */
+/*   Updated: 2015/12/21 08:55:55 by amerle           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MALLOC_H
 # define MALLOC_H
 
@@ -32,7 +44,7 @@ struct					s_range
 
 typedef struct			s_mc
 {
-	pthread_mutex_t 	maccess;
+	pthread_mutex_t		maccess;
 	pthread_mutexattr_t	mattr;
 	t_range				*small;
 	t_range				*tiny;
@@ -82,7 +94,7 @@ void					ft_mc_free_item(t_range *range, t_item *item);
 /*
 ** realloc.c
 */
-void					*ft_mc_realloc(t_range *range, t_item *it, size_t size);					
+void					*ft_mc_realloc(t_range *range, t_item *it, size_t size);
 
 /*
 ** putaddr.c
